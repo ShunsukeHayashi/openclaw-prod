@@ -43,6 +43,24 @@ Write-Host "model(resolved)   : $($entry.modelProvider)/$($entry.model)"
 Write-Host "updatedAt         : $($entry.updatedAt)"
 
 if ($entry.providerOverride -or $entry.modelOverride) {
-  Write-Host "\nWARNING: session override is active." -ForegroundColor Yellow
-  Write-Host "To reset (last resort): scripts/oc-prod-reset-overrides.ps1 -SessionKey $SessionKey" -ForegroundColor Yellow
+  Write-Host ""
+  Write-Host "############################################" -ForegroundColor Red
+  Write-Host "  WARNING: session override is active" -ForegroundColor Red
+  Write-Host "############################################" -ForegroundColor Red
+  Write-Host ""
+  Write-Host "--- Recommended Recovery Steps ---" -ForegroundColor Yellow
+  Write-Host ""
+  Write-Host "Step 1 (Official CLI reset - try this first):" -ForegroundColor Green
+  Write-Host "  openclaw sessions reset --key $SessionKey"
+  Write-Host "  * If the subcommand is not recognized, your OpenClaw version" -ForegroundColor DarkGray
+  Write-Host "    may not support it yet. Proceed to Step 2." -ForegroundColor DarkGray
+  Write-Host ""
+  Write-Host "Step 2 (JSON direct edit - last resort):" -ForegroundColor Magenta
+  Write-Host "  .\scripts\oc-prod-reset-overrides.ps1 -SessionKey $SessionKey"
+  Write-Host ""
+  Write-Host "Step 3 (Optional - restart gateway if routing is stale):" -ForegroundColor Cyan
+  Write-Host "  openclaw gateway restart"
+  Write-Host ""
+  Write-Host "After recovery, re-run this script to verify:" -ForegroundColor Cyan
+  Write-Host "  .\scripts\oc-prod-status.ps1 -SessionKey $SessionKey"
 }

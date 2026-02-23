@@ -1,6 +1,7 @@
 param(
   [string]$StateDir = "C:\\Users\\shuns\\Dev\\openclaw-state",
-  [string]$AgentId = "main"
+  [string]$AgentId = "main",
+  [switch]$Json
 )
 
 $ErrorActionPreference = "Stop"
@@ -28,9 +29,17 @@ foreach ($p in $store.PSObject.Properties) {
 }
 
 if ($overridden.Count -eq 0) {
-  Write-Host "No session overrides found." -ForegroundColor Green
+  if ($Json) {
+    Write-Output "[]"
+  } else {
+    Write-Host "No session overrides found." -ForegroundColor Green
+  }
   exit 0
 }
 
-Write-Host "Overrides found:" -ForegroundColor Yellow
-$overridden | Sort-Object updatedAt -Descending | Format-Table -AutoSize
+if ($Json) {
+  $overridden | Sort-Object updatedAt -Descending | ConvertTo-Json -Depth 5
+} else {
+  Write-Host "Overrides found:" -ForegroundColor Yellow
+  $overridden | Sort-Object updatedAt -Descending | Format-Table -AutoSize
+}

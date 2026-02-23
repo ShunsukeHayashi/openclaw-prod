@@ -25,6 +25,20 @@ openclaw-prod/
   staging/
 ```
 
+## Quick Start — 最初に使うコマンド3つ
+
+```powershell
+# 1. 現在の状態を確認（override有無・モデルルーティング）
+.\scripts\oc-prod-status.ps1
+
+# 2. override一覧を検出（-Json で機械可読出力も可）
+.\scripts\oc-prod-detect-overrides.ps1
+.\scripts\oc-prod-detect-overrides.ps1 -Json
+
+# 3. 異常があれば復旧（status の案内に従う）
+.\scripts\oc-prod-reset-overrides.ps1 -SessionKey "agent:main:main"
+```
+
 ## Next steps
 
 1. Add a runbook for "session model override got stuck".
