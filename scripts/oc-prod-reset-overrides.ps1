@@ -18,7 +18,8 @@ $bak = "$storePath.bak.$ts"
 Copy-Item $storePath $bak -Force
 Write-Host "Backed up: $bak" -ForegroundColor Cyan
 
-$store = Get-Content $storePath -Raw | ConvertFrom-Json
+# Read as UTF-8 explicitly (Windows PowerShell default encoding can corrupt Unicode and break JSON parsing)
+$store = Get-Content $storePath -Raw -Encoding UTF8 | ConvertFrom-Json
 $entry = $store.$SessionKey
 if (-not $entry) {
   throw "sessionKey not found in store: $SessionKey"

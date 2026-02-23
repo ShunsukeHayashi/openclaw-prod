@@ -11,7 +11,8 @@ if (!(Test-Path $storePath)) {
   throw "session store not found: $storePath"
 }
 
-$store = Get-Content $storePath -Raw | ConvertFrom-Json
+# Read as UTF-8 explicitly (Windows PowerShell default encoding can corrupt Unicode and break JSON parsing)
+$store = Get-Content $storePath -Raw -Encoding UTF8 | ConvertFrom-Json
 
 $overridden = @()
 foreach ($p in $store.PSObject.Properties) {
